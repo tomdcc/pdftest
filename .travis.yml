@@ -1,0 +1,14 @@
+language: java
+jdk:
+  - oraclejdk7
+branches:
+  only:
+  - master
+install: ./gradlew clean resolveAllDependencies assemble
+script: ./gradlew check
+    && ./gradlew uploadSnapshots
+env:
+  global:
+  - TERM=dumb
+  - secure: "sD1VJ1ggpzrJuswGVCHecAV6dQplOSWsTIksWML/CqwUxuV2XQ5eIIXTeVzWSULu97JXOuJvaAsFLhgloozoSujn4cmHsTYl6XWXjUe+DYqGyFsdp8zM5C2hFaQAry9+ebgDFbsqqy0KCSPcjzr9VtPXfisC6XVPxPucEhrmoIA="
+  - secure: "FVyuP5hhBw9N0P3aDbsX7MKAFq/lNOg8Mhdq7BpLffadIddHMOmqso4WWZl3FmPlHoAw/ml67Fj0KJWDX/TRm5LrmNxwg5qOoshn1Uh9p+T967WAo/sVZibO2XMQoOJ7BpGTKKDpo7g+XDTeiFhzcKCpss5lhMCicfGxTdIQQ+o="
