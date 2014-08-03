@@ -37,7 +37,7 @@ signing {
 }
 
 javadoc {
-	title = "Geb Cucumber API $version"
+	title = "pdftest API $version"
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
