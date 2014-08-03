@@ -36,13 +36,28 @@ signing {
 	required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
 }
 
-javadoc {
-	title = "pdftest API $version"
+tasks.withType(Groovydoc) {
+	exclude "**/internal/**"
+
+	link "http://download.oracle.com/javase/6/docs/api/",
+			"java.net",
+			"java.util",
+			"java.lang",
+			"java.io"
+
+	link "http://selenium.googlecode.com/svn/trunk/docs/api/java/",
+			"org.openqa.selenium"
+
+	link "http://groovy.codehaus.org/api/",
+			"groovy.lang"
+
+	docTitle = "Groovy API Documentation for pdftest $version"
+	windowTitle = "Groovy API for pdftest $version"
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+task javadocJar(type: Jar) {
 	classifier = 'javadoc'
-	from 'build/docs/javadoc'
+	from groovydoc
 }
 
 task sourcesJar(type: Jar) {
