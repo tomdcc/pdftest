@@ -72,8 +72,8 @@ class DownloadSpec extends Specification {
 
 		then:
 		pdfBrowser.documentIsA(PersonDocument)
-		assert pdfBrowser.document.name ==~ ~/\w+ \w+/
-		assert pdfBrowser.document.email ==~ ~/[\w\.]+@[\w\.]+/
+		pdfBrowser.document.name ==~ ~/\w+ \w+/
+		pdfBrowser.document.email ==~ ~/[\w\.]+@[\w\.]+/
 		pdfBrowser.document.prose.size() == 3
 	}
 
@@ -92,8 +92,8 @@ class DownloadSpec extends Specification {
 
 		then:
 		pdfBrowser.documentIsA(PersonDocument)
-		assert pdfBrowser.document.name ==~ ~/\w+ \w+/
-		assert pdfBrowser.document.email ==~ ~/[\w\.]+@[\w\.]+/
+		pdfBrowser.document.name ==~ ~/\w+ \w+/
+		pdfBrowser.document.email ==~ ~/[\w\.]+@[\w\.]+/
 		pdfBrowser.document.prose.size() == 3
 	}
 }
