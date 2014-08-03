@@ -24,6 +24,8 @@
 
 package io.jdev.pdftest
 
+import org.openqa.selenium.WebDriver
+
 public class PdfBrowser {
 
     List<List<String>> pages
@@ -35,6 +37,12 @@ public class PdfBrowser {
         document = null
         pages = pdfParser.pdfToTextFromUrl(url, cookies)
     }
+
+    void fetchDocumentFromUrl(String url, WebDriver driver) {
+		Map sessionCookies = driver.manage().cookies.collectEntries { [it.name, it.value] }
+		fetchDocumentFromUrl(url, sessionCookies)
+
+	}
 
     void fetchDocument(byte[] data) {
         document = null

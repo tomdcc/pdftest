@@ -55,7 +55,7 @@ class DownloadSpec extends Specification {
 		pdfBrowser.document.prose == paragraphs
 	}
 
-	void "can download pdf from url in session"() {
+	void "can download pdf from url in session passing cookies in"() {
 		when: 'go to home page'
 		browser.to HomePage
 
@@ -69,6 +69,26 @@ class DownloadSpec extends Specification {
 		def sessionCookies = browser.driver.manage().cookies.collectEntries { [it.name, it.value] }
 		String url = browser.calculateUri(browser.page.downloadFromSessionLink.@href, [:])
 		pdfBrowser.fetchDocumentFromUrl(url, sessionCookies)
+
+		then:
+		pdfBrowser.documentIsA(PersonDocument)
+		assert pdfBrowser.document.name ==~ ~/\w+ \w+/
+		assert pdfBrowser.document.email ==~ ~/[\w\.]+@[\w\.]+/
+		pdfBrowser.document.prose.size() == 3
+	}
+
+	void "can download pdf from url in session passing web driver in"() {
+		when: 'go to home page'
+		browser.to HomePage
+
+		and: 'generate pdf in session'
+		browser.page.saveInSessionLink.click()
+
+		then: 'back at home page'
+		browser.at HomePage
+
+		when: 'ask for pdf'
+		pdfBrowser.fetchDocumentFromUrl(browser.page.downloadFromSessionLink.@href, browser.driver)
 
 		then:
 		pdfBrowser.documentIsA(PersonDocument)

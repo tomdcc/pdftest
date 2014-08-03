@@ -28,7 +28,7 @@ apply from: "$project.rootDir/gradle/pom.gradle"
 
 dependencies {
 	compile 'com.itextpdf:itextpdf:5.5.2'
-
+	provided "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
 }
 
 signing {
