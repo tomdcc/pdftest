@@ -22,4 +22,23 @@
  * THE SOFTWARE.
  */
 
-include 'core', 'integration-test'
+
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServlet
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+class PdfDownloadServlet extends HttpServlet {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		byte[] data = (byte[]) req.session.getAttribute("pdf");
+		if(data == null) {
+			resp.sendError(404)
+		} else {
+			resp.contentType = "application/pdf"
+			resp.contentLength = data.length
+			OutputStream os = resp.outputStream
+			os.write(data)
+			os.close()
+		}
+	}
+}

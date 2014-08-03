@@ -22,4 +22,14 @@
  * THE SOFTWARE.
  */
 
-include 'core', 'integration-test'
+import geb.Page
+
+class HomePage extends Page {
+	static url = ''
+	static at = { title == 'PDF Test App' }
+	static content = {
+		downloadPdfLink         { $('#downloadNew') }
+		saveInSessionLink       { $('#saveInSession') }
+		downloadFromSessionLink { $('#downloadFromSession') }
+	}
+}

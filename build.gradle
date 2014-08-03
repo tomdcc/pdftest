@@ -44,16 +44,20 @@ subprojects {
 	}
 
 	ext {
+		groovyVersion = '1.8.9'
+		itextVersion = '5.5.2'
+		gebVersion = '0.9.3'
+		seleniumVersion = '2.42.2'
+
 		isSnapshot = version.endsWith("-SNAPSHOT")
 	}
 
 	dependencies {
 		// someone using this library will already have their own version
 		// of groovy around, so don't add it as a pom dependency
-		provided "org.codehaus.groovy:groovy-all:1.8.9"
-		compile 'com.itextpdf:itextpdf:5.5.2'
+		provided "org.codehaus.groovy:groovy-all:$groovyVersion"
 
-		testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+		testCompile "org.spockframework:spock-core:0.7-groovy-1.8"
 		testRuntime "cglib:cglib-nodep:3.1"
 	}
 

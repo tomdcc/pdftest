@@ -22,4 +22,4 @@
  * THE SOFTWARE.
  */
 
-include 'core', 'integration-test'
+baseUrl = 'http://localhost:8080/integration-test/'

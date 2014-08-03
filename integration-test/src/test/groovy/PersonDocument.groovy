@@ -22,4 +22,13 @@
  * THE SOFTWARE.
  */
 
-include 'core', 'integration-test'
+import io.jdev.pdftest.PdfDocument
+
+class PersonDocument extends PdfDocument {
+    static isA = { List<String> firstPageLines -> firstPageLines.contains('Personal Details') }
+    static content = {
+        name  { findLine(~/Name: (.*)/).trim() }
+        email { findLine(~/Email: (.*)/).trim() }
+        prose { findBetweenLines(~/Favourite prose:/, ~/Personal Details/) }
+    }
+}
