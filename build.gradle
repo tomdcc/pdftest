@@ -44,7 +44,7 @@ subprojects {
 	}
 
 	ext {
-		groovyVersion = '1.8.9'
+		groovyVersion = '1.8.6'
 		itextVersion = '5.5.2'
 		gebVersion = '0.9.3'
 		seleniumVersion = '2.42.2'
