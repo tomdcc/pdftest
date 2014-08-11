@@ -72,7 +72,17 @@ pdftest makes some utility methods availabke to extract content in that format:
  - the `findBetweenLines` method, which takes optional before and after
    regex patterns and returns the lines between them
  
+Reporting failure
+-----------------
+The `PdfDocument` class has a couple of properties useful for reporting errors:
 
+ - the `bytes` property contains the PDF file data for the document
+ - the `filename` property contains the filename of the PDF. This can come from
+   the file name if the PDF was read from a file or the `Content-Disposition` header
+   or URI of the PDF if it was downloaded.
+
+Together these let you save the PDF somewhere for later inspection if your test
+fails.
 
 Installation
 ------------
@@ -87,6 +97,9 @@ Or just download the jar from http://search.maven.org/ if your build system is a
 
 Changelog
 ---------
+
+#### Version 0.2
+ - Expose `bytes` and `filename` properties for later inspection of failing PDFs
 
 #### Version 0.1
  - Initial version
