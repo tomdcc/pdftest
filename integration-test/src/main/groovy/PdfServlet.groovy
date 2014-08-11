@@ -45,6 +45,10 @@ class PdfServlet extends HttpServlet {
 		} else {
 			resp.contentType = "application/pdf"
 			resp.contentLength = data.length
+            String filename = req.getParameter('filename')
+            if(filename) {
+                resp.addHeader("Content-Disposition", "attachment; filename=" + filename);
+            }
 			OutputStream os = resp.outputStream
 			os.write(data)
 			os.close()

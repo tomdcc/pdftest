@@ -43,7 +43,7 @@ class PdfBrowserSpec extends Specification {
         pdfBrowser.fetchDocument(DATA)
 
         then: 'parses pdf'
-        1 * pdfParser.pdfToText(DATA) >> [['Test Invoice', 'Account Number: 1234']]
+        1 * pdfParser.parsePdf(DATA) >> new PdfData(pages: [['Test Invoice', 'Account Number: 1234']])
 
         when: 'verify at that document'
         def result = pdfBrowser.documentIsA(TestDocument)
@@ -63,7 +63,7 @@ class PdfBrowserSpec extends Specification {
         pdfBrowser.fetchDocument(DATA)
 
         then: 'parses pdf'
-        1 * pdfParser.pdfToText(DATA) >> [['Different PDF']]
+        1 * pdfParser.parsePdf(DATA) >> new PdfData(pages: [['Different PDF']])
 
         when: 'verify at that document'
         pdfBrowser.documentIsA(TestDocument)

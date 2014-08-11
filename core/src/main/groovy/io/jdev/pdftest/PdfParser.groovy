@@ -29,14 +29,28 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 class PdfParser {
 
-    public List<List<String>> pdfToTextFromUrl(String url, Map<String,String> cookies = [:]) {
-        pdfToText(downloadUrl(url, cookies))
+    public PdfData parsePdf(String url, Map<String,String> cookies = [:]) {
+        PdfData data = downloadUrl(url, cookies)
+        data.pages = pdfToText(data.bytes)
+        data
+    }
+
+    public PdfData parsePdf(byte[] data, String filename = null) {
+        new PdfData(bytes: data, filename: filename, pages: pdfToText(data))
+    }
+
+    public PdfData parsePdf(File file) {
+        byte[] data = file.bytes
+        parsePdf(data, file.name)
     }
 
     public List<List<String>> pdfToText(byte[] data) {
-        return pdfToText(new PdfReader(data))
+        pdfToText(new PdfReader(data))
     }
 
     public List<List<String>> pdfToText(PdfReader reader) {
@@ -52,15 +66,63 @@ class PdfParser {
         pages
     }
 
-    byte[] downloadUrl(String urlStr, Map<String,String> cookies) {
+    PdfData downloadUrl(String urlStr, Map<String,String> cookies) {
         URL url = new URL(urlStr)
         HttpURLConnection con = url.openConnection() as HttpURLConnection
+        PdfData data = downloadUrl(con, cookies)
+        if(!data.filename) {
+            // no attachment filename specified, use url
+            data.filename = urlToFilename(urlStr)
+        }
+        data
+    }
+
+    private String urlToFilename(String urlStr) {
+        // string off query string
+        int qsPlace = urlStr.indexOf('?')
+        String filename = qsPlace == -1 ? urlStr : urlStr.substring(0, qsPlace)
+
+        // strip up to last '/'
+        filename = filename.substring(filename.lastIndexOf('/') + 1)
+
+        // if nothing else left,  (e.g. was http://foo.com/' with no filename)
+        // then use modified hostname instead
+        if(!filename) {
+            filename = new URL(urlStr).host.replace('.' as char, '-' as char)
+        }
+
+        // add .pdf on the end if it doesn't have it, for easy saving and
+        // subsequent opening
+        if(!filename.toLowerCase().endsWith('.pdf')) {
+            filename += '.pdf'
+        }
+        println filename
+        filename
+    }
+
+    PdfData downloadUrl(HttpURLConnection con, Map<String,String> cookies) {
         if(cookies) {
             cookies.each { key, value ->
                 con.setRequestProperty("Cookie", "$key=$value")
             }
         }
-        con.inputStream.bytes
+        PdfData data = new PdfData()
+        data.bytes = con.inputStream.bytes
+        data.filename = extractFilenameFromHeader(con)
+        data
+    }
+
+    private static final Pattern CONTENT_DISP_ATTACHMENT_PATTERN = ~/(?i)attachment; filename=(.*)/
+    private String extractFilenameFromHeader(HttpURLConnection con) {
+        String contentDisp = con.getHeaderField("Content-Disposition")
+        println "contentDisp: [$contentDisp]"
+        if(contentDisp) {
+            Matcher m = CONTENT_DISP_ATTACHMENT_PATTERN.matcher(contentDisp)
+            if(m.matches()) {
+                return m.group(1)
+            }
+        }
+        null
     }
 
 }

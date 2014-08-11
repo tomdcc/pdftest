@@ -27,6 +27,8 @@ package io.jdev.pdftest;
 import java.util.regex.Pattern;
 
 public abstract class PdfDocument {
+    byte[] bytes
+    String filename
 	List<List<String>> pages
 	List<String> cachedLines
 	

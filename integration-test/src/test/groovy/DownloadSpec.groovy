@@ -53,6 +53,9 @@ class DownloadSpec extends Specification {
 		pdfBrowser.document.name == person.name
 		pdfBrowser.document.email == person.email
 		pdfBrowser.document.prose == paragraphs
+
+        and:
+        pdfBrowser.document.filename == "pdf.pdf"
 	}
 
 	void "can download pdf from url in session passing cookies in"() {
@@ -96,4 +99,20 @@ class DownloadSpec extends Specification {
 		pdfBrowser.document.email ==~ ~/[\w\.]+@[\w\.]+/
 		pdfBrowser.document.prose.size() == 3
 	}
+
+    void "can download pdf from url with filename"() {
+        when: 'ask for pdf'
+        String url = browser.calculateUri('pdf', [name: person.name, email: person.email, paragraphs: paragraphs, filename: 'foo.pdf'])
+        pdfBrowser.fetchDocumentFromUrl(url)
+
+        then:
+        pdfBrowser.documentIsA(PersonDocument)
+        pdfBrowser.document.name == person.name
+        pdfBrowser.document.email == person.email
+        pdfBrowser.document.prose == paragraphs
+
+        and:
+        pdfBrowser.document.filename == 'foo.pdf'
+    }
+
 }

@@ -24,43 +24,8 @@
 
 package io.jdev.pdftest
 
-public class PdfBrowser {
-
-    PdfParser pdfParser = new PdfParser()
-
-    private PdfData data
-    PdfDocument document
-
-    void fetchDocumentFromUrl(String url, Map<String,String> cookies = [:]) {
-        document = null
-        data = pdfParser.parsePdf(url, cookies)
-    }
-
-    void fetchDocumentFromUrl(String url, def webDriver) {
-		Map sessionCookies = webDriver.manage().cookies.collectEntries { [it.name, it.value] }
-		fetchDocumentFromUrl(url, sessionCookies)
-	}
-
-    void fetchDocument(byte[] bytes) {
-        document = null
-        data = pdfParser.parsePdf(bytes)
-    }
-
-    void fetchDocumentFromFile(File file) {
-        document = null
-        data = pdfParser.parsePdf(file)
-    }
-
-    boolean documentIsA(Class<? extends PdfDocument> requiredClass) {
-        def result = requiredClass.isA.call(data.pages[0])
-        if(result) {
-            document = requiredClass.newInstance()
-            document.pages = data.pages
-            document.filename = data.filename
-            document.bytes = data.bytes
-            true
-        } else {
-            throw new PdfIncorrectException(requiredClass)
-        }
-    }
+public class PdfData {
+    String filename;
+    byte[] bytes;
+    List<List<String>> pages;
 }
