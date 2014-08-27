@@ -28,7 +28,7 @@ public class PdfBrowser {
 
     PdfParser pdfParser = new PdfParser()
 
-    private PdfData data
+    PdfData data
     PdfDocument document
 
     void fetchDocumentFromUrl(String url, Map<String,String> cookies = [:]) {
