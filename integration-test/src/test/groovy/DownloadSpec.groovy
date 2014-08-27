@@ -76,7 +76,7 @@ class DownloadSpec extends Specification {
 		then:
 		pdfBrowser.documentIsA(PersonDocument)
 		pdfBrowser.document.name ==~ ~/\w+ \w+/
-		pdfBrowser.document.email ==~ ~/[\w\.]+@[\w\.]+/
+		pdfBrowser.document.email ==~ ~/[\w\.-]+@[\w\.-]+/
 		pdfBrowser.document.prose.size() == 3
 	}
 
