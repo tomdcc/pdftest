@@ -91,7 +91,7 @@ pdftest is deployed to Maven Central and can be added to your project as a depen
 
     groupId: io.jdev.pdf
     artifactId: pdftest
-    version: 0.1
+    version: 0.2
 
 Or just download the jar from http://search.maven.org/ if your build system is a bit less connected.
 
